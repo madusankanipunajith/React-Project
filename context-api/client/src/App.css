@@ -2,3 +2,14 @@
   text-align: center;
 }
 
+ul{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 10px;
+  margin-left: -50px;
+}
+ul > li{
+   display: block;
+   text-decoration: none;
+}
