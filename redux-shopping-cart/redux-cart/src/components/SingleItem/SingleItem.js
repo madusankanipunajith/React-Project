@@ -1,20 +1,25 @@
 import React from "react";
 import styles from "./SingleItem.module.css";
 
-const SingleItem = () => {
+import { addToCart } from "../../redux/Shopping/shopping-actions";
+
+import { connect } from "react-redux";
+
+const SingleItem = ({currentItem, addToCart}) => {
   return (
     <div className={styles.singleItem}>
       <img
         className={styles.singleItem__image}
-        src={'#'}
-        alt={'zzz'}
+        src={currentItem.image}
+        alt={currentItem.title}
       />
       <div className={styles.singleItem__details}>
-        <p className={styles.details__title}>ABC</p>
-        <p className={styles.details__description}>zzzzzzz</p>
-        <p className={styles.details__price}>$ 100</p>
+        <p className={styles.details__title}>{currentItem.title}</p>
+        <p className={styles.details__description}>{currentItem.description}</p>
+        <p className={styles.details__price}>$ {currentItem.price}</p>
 
         <button
+          onClick={()=> addToCart(currentItem.id)}
           className={styles.details__addBtn}
         >
           Add To Cart
@@ -24,4 +29,15 @@ const SingleItem = () => {
   );
 };
 
-export default SingleItem;
+const mapStateToProps = state =>{
+    return {
+        currentItem: state.shop.currentItem
+    }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+    return {
+        addToCart: (id) => dispatch(addToCart(id))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SingleItem);
