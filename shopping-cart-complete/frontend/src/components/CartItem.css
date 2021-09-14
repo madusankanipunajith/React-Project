@@ -53,6 +53,10 @@
 }
 
 @media (max-width: 500px){
+    .cartitem{
+        grid-template-columns: 1fr;
+        border: 1px solid #171717;
+    }
     .cartitem__name{
         font-size: 1.2rem;
     }
