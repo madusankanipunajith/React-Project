@@ -21,9 +21,7 @@ function App() {
               <Route exact path = "/">
                   <HomeScreen/>
               </Route>
-              <Route exact path = "/product/:id">
-                  <ProductScreen/>
-              </Route>
+              <Route exact path="/product/:id" component={ProductScreen} />
               <Route exact path = "/cart">
                   <CartScreen/>
               </Route> 
