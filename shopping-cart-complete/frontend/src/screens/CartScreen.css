@@ -42,3 +42,22 @@
 .cartscreen__right div button:hover{
     opacity: 0.9;
 }
+
+@media (max-width: 768px){
+    .cartscreen h2{
+        text-align: center;
+    }
+    .cartscreen{
+        width: 100%;
+        margin: 0;
+        flex-direction: column;
+    }
+
+    .cartscreen__left{
+        margin: 0;
+    }
+
+    .cartscreen__right{
+        margin: 1rem;
+    }
+}
