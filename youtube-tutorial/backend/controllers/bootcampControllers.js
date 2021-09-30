@@ -4,7 +4,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const { findByIdAndUpdate } = require('../models/Bootcamp');
 
 exports.getAllBootCamps = asyncHanlder(async (req, res, next) =>{
-    //res.send('get all bootcamps...');
+    //res.send('get all bootcamps...') with smart filterning and sorting mechanism; 
     const bootcamps = await Bootcamp.find();
 
     res.status(200).json({
