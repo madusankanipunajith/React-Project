@@ -5,7 +5,29 @@ const { findByIdAndUpdate } = require('../models/Bootcamp');
 
 exports.getAllBootCamps = asyncHanlder(async (req, res, next) =>{
     //res.send('get all bootcamps...') with smart filterning and sorting mechanism; 
-    const bootcamps = await Bootcamp.find();
+    // nodemon => price[lte] -> 1000 , sort -> -price,rating
+
+    let query; 
+
+    const reqQuery = {...req.query};
+    const removeFields = ["sort"];
+    removeFields.forEach((val) => delete reqQuery[val]);    // {price: {lte : 1000}, sort: '-price'} => {price: {lte : 1000}}
+    let queryStr = JSON.stringify(reqQuery);                // {"price": {"lte" : "1000"}}
+    queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g,(match)=> `$${match}`);     // {"price": {"$lte" : "1000"}}
+
+    console.log(JSON.parse(queryStr));
+
+    query = Bootcamp.find(JSON.parse(queryStr));
+
+    // check wether sort attribute is comming under the captured object
+    if(req.query.sort){
+        const sortByArr = req.query.sort.split(',');
+        const sortByStr = sortByArr.join(' ');
+        query = query.sort(sortByStr);          // Bootcamp.find({price: {lte: 1000}}).sort('-price rating')
+    }else{
+        query = query.sort('-price');
+    }    
+    const bootcamps = await query;
 
     res.status(200).json({
         success: true,
