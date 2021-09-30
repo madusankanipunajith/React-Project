@@ -9,29 +9,63 @@ exports.getAllBootCamps = asyncHanlder(async (req, res, next) =>{
 
     let query; 
 
+    // we have to pass ui values as a separate object
+    let uiValues = {
+        filtering:{},
+        sorting:{},
+        minValue: 0,
+        maxValue: 0
+    }
+
     const reqQuery = {...req.query};
+    console.log(reqQuery);
     const removeFields = ["sort"];
     removeFields.forEach((val) => delete reqQuery[val]);    // {price: {lte : 1000}, sort: '-price'} => {price: {lte : 1000}}
+
+    const filterKeys = Object.keys(reqQuery);
+    const filterValues = Object.values(reqQuery);
+
+    filterKeys.forEach((val, idx) => uiValues.filtering[val] = filterValues[idx]);
+
     let queryStr = JSON.stringify(reqQuery);                // {"price": {"lte" : "1000"}}
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g,(match)=> `$${match}`);     // {"price": {"$lte" : "1000"}}
 
-    console.log(JSON.parse(queryStr));
 
     query = Bootcamp.find(JSON.parse(queryStr));
 
     // check wether sort attribute is comming under the captured object
     if(req.query.sort){
         const sortByArr = req.query.sort.split(',');
+
+        sortByArr.forEach((val)=> {
+            let order;
+            if(val[0] === '-'){
+                order = "descending";
+            }else{
+                order = "ascending";
+            }
+
+            uiValues.sorting[val.replace("-","")] = order;
+        })
+
         const sortByStr = sortByArr.join(' ');
         query = query.sort(sortByStr);          // Bootcamp.find({price: {lte: 1000}}).sort('-price rating')
     }else{
         query = query.sort('-price');
-    }    
+    }
+
     const bootcamps = await query;
 
-    res.status(200).json({
+    const maxPrice = await Bootcamp.find().sort({price: -1}).limit(1).select("-_id price");
+    const minPrice = await Bootcamp.find().sort({price: 1}).limit(1).select("-_id price");
+
+    uiValues.maxValue = maxPrice[0].price;
+    uiValues.minValue = minPrice[0].price;
+
+    res.status(200).json({ 
         success: true,
-        data: bootcamps
+        data: bootcamps,
+        uiValues
     })
 });
 
