@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 var cors = require('cors');
 const connectDB = require('./config/db');
+const errorHandler = require('./middleware/errorHandler');
 
 connectDB();
 
@@ -22,6 +23,10 @@ app.use(express.json());
 
 // routes
 app.use("/api/v1/bootcamps", require("./routes/bootcampRoutes"));
+
+
+// Error Handler => should be the last most middleware and also this function's first patameter should be 'err'
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, ()=> console.log(`Server is running on port ${PORT}`));
