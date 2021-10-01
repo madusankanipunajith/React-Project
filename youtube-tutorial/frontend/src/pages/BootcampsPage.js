@@ -43,6 +43,7 @@ function BootcampsPage() {
     const [priceRange, setPriceRange] = useState([25, 75]);
     const [priceOrder, setPriceOrder] = useState("descending");
     const [filter, setFilter] = useState("");
+    const [sorting, setSorting] = useState("");
 
     const updateUIValues = (uiValues) =>{
         setSliderMax(uiValues.maxValue);
@@ -69,10 +70,19 @@ function BootcampsPage() {
                 let query;
                 // when user refresh the page filter value gonna be empty but params is not reset
                 if(params && !filter){
-                    query = params; console.log('hi');
+                    query = params; 
                 }else{
-                    query = filter; console.log('bye');
+                    query = filter;
                 }
+
+                if(sorting){
+                    if(query.length === 0){
+                        query = `?sort=${sorting}`
+                    }else{
+                        query = query + "&sort=" + sorting;
+                    }
+                }
+                
                 const {data} = await axios({
                     method: "GET",
                     url: `http://localhost:5000/api/v1/bootcamps${query}`,
@@ -95,7 +105,7 @@ function BootcampsPage() {
             setBootcamps([]);
             setLoading(false);
         }
-    }, [filter, params])
+    }, [filter, params, sorting])
 
 
     // custome functions
@@ -132,6 +142,17 @@ function BootcampsPage() {
         history.push(urlFilter);
     }
 
+    const handleSortChange = (e) =>{
+        setPriceOrder(e.target.value);
+
+        if(e.target.value === "ascending"){
+            setSorting("price");
+        }else if(e.target.value === "descending"){
+            setSorting("-price");
+        }else{
+            
+        }
+    }
 
 
     return (
@@ -167,7 +188,7 @@ function BootcampsPage() {
                     <Grid item xs={12} sm={6}>
                         <Typography gutterBottom>Sort By</Typography>
                         <FormControl component="fieldset" className={classes.filters}>
-                            <RadioGroup aria-label="price-order" name="price-order"> 
+                            <RadioGroup aria-label="price-order" name="price-order" value={priceOrder} onChange={handleSortChange}> 
                                 <FormControlLabel value="descending" disabled={loading} control={<Radio />} label="Price: Highest - Lowest"/>
                                 <FormControlLabel value="ascending" disabled={loading} control={<Radio />} label="Price: Lowest - Highest"/>
                             </RadioGroup>
