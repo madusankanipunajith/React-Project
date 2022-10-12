@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 function UserProfile(props) {
   
-  const onHandleClick = () =>{
+  const handleSubmitClick = () =>{
     props.onUpdateClick2("Madusanka"); // arguments can be passed dynamically
-  }
+  } 
 
   return (
     <div>
@@ -13,7 +13,7 @@ function UserProfile(props) {
         <h3>University : {props.university}</h3>
         <h4>Good Morning</h4>
         <button onClick={props.onUpdateClick}>Submit</button>
-        <button onClick={onHandleClick}>Submit</button>
+        <button onClick={handleSubmitClick}>Submit</button>
     </div>
   )
 
