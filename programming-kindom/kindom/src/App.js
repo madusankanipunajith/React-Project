@@ -1,8 +1,11 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import UserProfile from './components/UserProfile';
 
 function App() {
+
+  const [userLoggedIn, setUserLoggedIn] = React.useState(false);
 
   const onUpdatEvent = () => {
     console.log("Hello world");
@@ -26,6 +29,10 @@ function App() {
     console.log(event.target.value, age, name, obj);
   }
 
+  const handleLogin = () => {
+    setUserLoggedIn(!userLoggedIn);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -37,9 +44,15 @@ function App() {
         <button onClick={() => {console.log('User has clicked the cancel button')}}>Cancel</button>
 
         <br></br>
+        <h3>Event Handling</h3>
 
         <input type="text" onChange = {handleInputChange} />
         <input type="text" onChange = {(event) => handleInput2Change(event, "Madusanka", 25, {})} />
+
+        <h3>Conditinal Rendering</h3>
+        {userLoggedIn && <p>Hello Madusanka</p>}
+        <button onClick={handleLogin}>{userLoggedIn ? 'Log Out' : 'Login'}</button>
+
       </header>
 
 
