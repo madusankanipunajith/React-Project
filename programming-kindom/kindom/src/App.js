@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import UserProfile from './components/UserProfile';
+import Form from './components/Form';
 
 function App() {
 
@@ -53,6 +54,8 @@ function App() {
         {userLoggedIn && <p>Hello Madusanka</p>}
         <button onClick={handleLogin}>{userLoggedIn ? 'Log Out' : 'Login'}</button>
 
+        <h3>Form Handling</h3>
+        <Form/>
       </header>
 
 
