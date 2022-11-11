@@ -7,6 +7,25 @@ import Form from './components/Form';
 import { ThemeContext, themes } from './providers/theme';
 import ApplicationWrapper from './components/ApplicationWrapper/index';
 
+const initalState = {
+  count : 0
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'add':
+      return {
+        count : state.count + 1
+      }
+    case 'sub':
+      return {
+        count: state.count - 1
+      }
+    default:
+      return state
+  }
+}
+
 function App() {
 
   // useState
@@ -47,6 +66,10 @@ function App() {
     setTheme(theme === themes.light ? themes.dark : themes.light)
   }
 
+
+  // useReducer
+  const [state, dispatch] = React.useReducer(reducer, initalState)
+
   return (
     <div className="App">
       <header className="App-header">
@@ -79,6 +102,12 @@ function App() {
           <button onClick={handleClick}>Click</button>
         </ApplicationWrapper>
       </ThemeContext.Provider>
+
+      <h1>User Reducer</h1>
+
+      <span>Count : {state.count}</span>
+      <button onClick={()=>{dispatch({type: "add"})}}>Add</button>
+      <button onClick={()=>{dispatch({type: "sub"})}}>Sub</button>
 
     </div>
   );
