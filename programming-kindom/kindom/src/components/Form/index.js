@@ -2,7 +2,7 @@ import React from 'react'
 
 function Form() {
 
-    const [data, setData] = React.useState();
+    const [data, setData] = React.useState({});
 
     const handleSubmit = (event) => {
         console.log(data);
@@ -19,7 +19,7 @@ function Form() {
         <form onSubmit={handleSubmit}>
             <div><input type="text" name="firstName" onChange={handleChange} /></div>
             <div><input type="text" name="lastName" onChange={handleChange} /></div>
-            <div><input type="checkbox" name='isOk' onChange={handleChange}/></div>
+            <div><input type="checkbox" name='isOk' onChange={handleChange} /></div>
             <button type='submit'>Submit</button>
         </form>
 
