@@ -9,6 +9,7 @@ import ApplicationWrapper from './components/ApplicationWrapper/index';
 
 function App() {
 
+  // useState
   const [userLoggedIn, setUserLoggedIn] = React.useState(false);
   const [theme, setTheme] = React.useState(themes.light)
 
@@ -78,7 +79,7 @@ function App() {
           <button onClick={handleClick}>Click</button>
         </ApplicationWrapper>
       </ThemeContext.Provider>
-      
+
     </div>
   );
 }
